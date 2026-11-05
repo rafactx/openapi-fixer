@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Pipeline output (regenerate with `make build`)
+build/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
