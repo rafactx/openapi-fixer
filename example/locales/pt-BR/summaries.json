@@ -1,0 +1,23 @@
+{
+  "list": "Listar lojas (v1)",
+  "save": "Criar loja (v1)",
+  "findById": "Obter loja (v1)",
+  "edit": "Substituir loja (v1)",
+  "delete": "Excluir loja (v1)",
+  "findById_1": "Obter shopping",
+  "findPaginated": "Listar produtos",
+  "findById_2": "Obter produto",
+  "formFields": "Listar campos da pesquisa",
+  "getById": "Obter loja",
+  "patch": "Atualizar loja",
+  "findAll": "Listar redes",
+  "findAll_1": "Listar marcas",
+  "findPaginated_1": "Listar promotores",
+  "getById_1": "Obter promotor",
+  "findScheduledVisits": "Listar visitas agendadas",
+  "saveAll": "Agendar visitas",
+  "deleteAll": "Desagendar visitas",
+  "findCheckIns": "Listar check-ins da visita",
+  "formsActivated": "Listar pesquisas ativas",
+  "loadData": "Listar respostas da pesquisa"
+}

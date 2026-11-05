@@ -1,0 +1,40 @@
+# Reviewed, endpoint-specific fixes applied by step 3.
+# Each entry is idempotent. Parameters are added by $ref to components injected in
+# step 1, so their descriptions are already translated for every locale.
+
+corrections:
+  # DELETE must not carry a body. The visit IDs move to a query parameter.
+  - id: unschedule-visits-no-body
+    path: /v3/workspaces/{workspaceId}/reps/{repId}/scheduled-visits
+    method: delete
+    action: REMOVE_KEY
+    key: requestBody
+  - id: unschedule-visits-ids-in-query
+    path: /v3/workspaces/{workspaceId}/reps/{repId}/scheduled-visits
+    method: delete
+    action: ADD_PARAMETER
+    parameter: { $ref: '#/components/parameters/VisitIds' }
+
+  # 'name' was declared as a path parameter, but /brands has no {name}: it is a filter.
+  - id: brands-name-is-not-a-path-param
+    path: /v3/workspaces/{workspaceId}/brands
+    method: get
+    action: REMOVE_PARAMETER
+    match: { name: name, in: path }
+  - id: brands-name-as-query-filter
+    path: /v3/workspaces/{workspaceId}/brands
+    method: get
+    action: ADD_PARAMETER
+    parameter: { $ref: '#/components/parameters/BrandName' }
+
+  # The URL uses {workspaceId}, but these legacy operations never declare it.
+  - id: mall-declares-workspace-id
+    path: /v1/{workspaceId}/malls/{mallId}
+    method: get
+    action: ADD_PARAMETER
+    parameter: { $ref: '#/components/parameters/WorkspaceId' }
+  - id: survey-fields-declares-workspace-id
+    path: /v1/{workspaceId}/surveys/{surveyId}/fields
+    method: get
+    action: ADD_PARAMETER
+    parameter: { $ref: '#/components/parameters/WorkspaceId' }

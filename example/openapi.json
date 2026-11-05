@@ -1,0 +1,1701 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/v1/{workspaceId}/stores": {
+      "get": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v1.store.list.description",
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "api.doc.param.page.description",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "api.doc.param.size.description",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 200
+            }
+          },
+          {
+            "name": "enabled",
+            "in": "query",
+            "description": "api.doc.param.enabled.description",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.store.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page Store V1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v1.store.create.description",
+        "operationId": "save",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "api.doc.v1.store.body.description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store V1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "api.doc.v1.store.create-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store V1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{workspaceId}/stores/{storeId}": {
+      "get": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v1.store.get.description",
+        "operationId": "findById",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "api.doc.param.store-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.store.get-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store V1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v1.store.update.description",
+        "operationId": "edit",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "api.doc.param.store-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "api.doc.v1.store.body.description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store V1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.store.update-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store V1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v1.store.delete.description",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "api.doc.param.store-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "api.doc.v1.store.body.description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store V1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "api.doc.v1.store.delete-ok.description"
+          }
+        }
+      }
+    },
+    "/v1/{workspaceId}/malls/{mallId}": {
+      "get": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v1.mall.get.description",
+        "operationId": "findById_1",
+        "parameters": [
+          {
+            "name": "mallId",
+            "in": "path",
+            "description": "api.doc.param.mall-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.mall.get-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mall V1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{workspaceId}/products": {
+      "get": {
+        "tags": [
+          "api.doc.section.products.title"
+        ],
+        "description": "api.doc.v1.product.list.description",
+        "operationId": "findPaginated",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "api.doc.param.page.description",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "api.doc.param.size.description",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.product.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page Product V1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{workspaceId}/products/{productId}": {
+      "get": {
+        "tags": [
+          "api.doc.section.products.title"
+        ],
+        "description": "api.doc.v1.product.get.description",
+        "operationId": "findById_2",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "api.doc.param.product-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.product.get-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product V1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{workspaceId}/surveys/{surveyId}/fields": {
+      "get": {
+        "tags": [
+          "api.doc.section.surveys.title"
+        ],
+        "description": "api.doc.v1.survey-field.list.description",
+        "operationId": "formFields",
+        "parameters": [
+          {
+            "name": "surveyId",
+            "in": "path",
+            "description": "api.doc.param.survey-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v1.survey-field.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Survey Field V1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/stores/{storeId}": {
+      "get": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v3.store.get.description",
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "api.doc.param.store-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.store.get-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store%20V3"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v3.store.patch.description",
+        "operationId": "patch",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "api.doc.param.store-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "api.doc.v3.store.patch-body.description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Store Patch V3"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.store.patch-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store V3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/chains": {
+      "get": {
+        "tags": [
+          "api.doc.section.stores.title"
+        ],
+        "description": "api.doc.v3.chain.list.description",
+        "operationId": "findAll",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.chain.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Chain V3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/brands": {
+      "get": {
+        "tags": [
+          "api.doc.section.products.title"
+        ],
+        "description": "api.doc.v3.brand.list.description",
+        "operationId": "findAll_1",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.brand-name.description",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.brand.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Brand V3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/reps": {
+      "get": {
+        "tags": [
+          "api.doc.section.reps.title"
+        ],
+        "description": "api.doc.v3.rep.list.description",
+        "operationId": "findPaginated_1",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "api.doc.param.page.description",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "api.doc.param.size.description",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.rep.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page Field Rep V3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/reps/{repId}": {
+      "get": {
+        "tags": [
+          "api.doc.section.reps.title"
+        ],
+        "description": "api.doc.v3.rep.get.description",
+        "operationId": "getById_1",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "repId",
+            "in": "path",
+            "description": "api.doc.param.rep-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.rep.get-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Field%20Rep%20V3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/reps/{repId}/scheduled-visits": {
+      "get": {
+        "tags": [
+          "api.doc.section.visits.title"
+        ],
+        "description": "api.doc.v3.visit.list.description",
+        "operationId": "findScheduledVisits",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "repId",
+            "in": "path",
+            "description": "api.doc.param.rep-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "api.doc.param.from.description",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "description": "api.doc.param.to.description",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.visit.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Scheduled Visit V3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "api.doc.section.visits.title"
+        ],
+        "description": "api.doc.v3.visit.create.description",
+        "operationId": "saveAll",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "repId",
+            "in": "path",
+            "description": "api.doc.param.rep-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "api.doc.v3.visit.create-body.description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Scheduled Visit Input V3"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "api.doc.v3.visit.create-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Scheduled Visit V3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "api.doc.section.visits.title"
+        ],
+        "description": "api.doc.v3.visit.delete.description",
+        "operationId": "deleteAll",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "repId",
+            "in": "path",
+            "description": "api.doc.param.rep-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "api.doc.v3.visit.delete-body.description",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "api.doc.v3.visit.delete-ok.description"
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/visits/{visitId}/check-ins": {
+      "get": {
+        "tags": [
+          "api.doc.section.visits.title"
+        ],
+        "description": "api.doc.v3.checkin.list.description",
+        "operationId": "findCheckIns",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "visitId",
+            "in": "path",
+            "description": "api.doc.param.visit-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.checkin.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Check In V3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/surveys": {
+      "get": {
+        "tags": [
+          "api.doc.section.surveys.title"
+        ],
+        "description": "api.doc.v3.survey.list.description",
+        "operationId": "formsActivated",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.survey.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Survey V3"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/workspaces/{workspaceId}/surveys/{surveyId}/responses": {
+      "get": {
+        "tags": [
+          "api.doc.section.surveys.title"
+        ],
+        "description": "api.doc.v3.response.list.description",
+        "operationId": "loadData",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "description": "api.doc.param.workspace-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 7
+          },
+          {
+            "name": "surveyId",
+            "in": "path",
+            "description": "api.doc.param.survey-id.description",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "required": true
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "description": "api.doc.param.since.description",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "api.doc.param.page.description",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "api.doc.param.size.description",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "api.doc.v3.response.list-ok.description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page Survey Response V3"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "description": "api.doc.address.description",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "api.doc.address.street.description",
+            "example": "Rua Augusta"
+          },
+          "number": {
+            "type": "string",
+            "description": "api.doc.address.number.description",
+            "example": "1500"
+          },
+          "district": {
+            "type": "string",
+            "description": "api.doc.address.district.description",
+            "example": "Consolação"
+          },
+          "city": {
+            "type": "string",
+            "description": "api.doc.address.city.description",
+            "example": "São Paulo"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "api.doc.address.postal-code.description",
+            "example": "01304-001"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "api.doc.address.latitude.description",
+            "format": "double",
+            "example": -23.5558
+          },
+          "longitude": {
+            "type": "number",
+            "description": "api.doc.address.longitude.description",
+            "format": "double",
+            "example": -46.6623
+          }
+        }
+      },
+      "Chain V3": {
+        "type": "object",
+        "description": "api.doc.v3.chain.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.chain.id.description",
+            "format": "int64",
+            "example": 12
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v3.chain.name.description",
+            "example": "Mercado Bom Preço"
+          }
+        }
+      },
+      "Store V1": {
+        "type": "object",
+        "description": "api.doc.v1.store.description",
+        "required": [
+          "name",
+          "code"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v1.store.id.description",
+            "format": "int64",
+            "readOnly": true,
+            "example": 4021
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v1.store.name.description",
+            "example": "Bom Preço - Paulista"
+          },
+          "code": {
+            "type": "string",
+            "description": "api.doc.v1.store.code.description",
+            "example": "SP-0042"
+          },
+          "chainName": {
+            "type": "string",
+            "description": "api.doc.v1.store.chain-name.description",
+            "example": "Mercado Bom Preço"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "api.doc.v1.store.enabled.description",
+            "example": true
+          },
+          "address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "description": "api.doc.v1.store.address.description"
+          }
+        }
+      },
+      "Store V3": {
+        "type": "object",
+        "description": "api.doc.v3.store.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.store.id.description",
+            "format": "int64",
+            "example": 4021
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v3.store.name.description",
+            "example": "Bom Preço - Paulista"
+          },
+          "code": {
+            "type": "string",
+            "description": "api.doc.v3.store.code.description",
+            "example": "SP-0042"
+          },
+          "chain": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Chain%20V3"
+              }
+            ],
+            "description": "api.doc.v3.store.chain.description"
+          },
+          "format": {
+            "type": "string",
+            "description": "api.doc.v3.store.format.description",
+            "enum": [
+              "HYPERMARKET",
+              "SUPERMARKET",
+              "CONVENIENCE",
+              "PHARMACY",
+              "WHOLESALE"
+            ],
+            "example": "SUPERMARKET"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "api.doc.v3.store.enabled.description",
+            "example": true
+          },
+          "address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "description": "api.doc.v3.store.address.description"
+          },
+          "_link": {
+            "type": "string",
+            "description": "api.doc.common.link.description",
+            "format": "uri",
+            "readOnly": true,
+            "example": "https://demo.shelfline.example/api/v3/workspaces/7/stores/4021"
+          }
+        }
+      },
+      "Store Patch V3": {
+        "type": "object",
+        "description": "api.doc.v3.store-patch.description",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "api.doc.v3.store.name.description"
+          },
+          "code": {
+            "type": "string",
+            "description": "api.doc.v3.store.code.description"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "api.doc.v3.store.enabled.description"
+          }
+        }
+      },
+      "Mall V1": {
+        "type": "object",
+        "description": "api.doc.v1.mall.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v1.mall.id.description",
+            "format": "int64",
+            "example": 88
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v1.mall.name.description",
+            "example": "Shopping Vila Verde"
+          },
+          "address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "description": "api.doc.v1.mall.address.description"
+          }
+        }
+      },
+      "Brand V3": {
+        "type": "object",
+        "description": "api.doc.v3.brand.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.brand.id.description",
+            "format": "int64",
+            "example": 301
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v3.brand.name.description",
+            "example": "Café Aurora"
+          }
+        }
+      },
+      "Product V1": {
+        "type": "object",
+        "description": "api.doc.v1.product.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v1.product.id.description",
+            "format": "int64",
+            "example": 9910
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v1.product.name.description",
+            "example": "Café Aurora Tradicional 500 g"
+          },
+          "sku": {
+            "type": "string",
+            "description": "api.doc.v1.product.sku.description",
+            "example": "AUR-TRAD-500"
+          },
+          "barcode": {
+            "type": "string",
+            "description": "api.doc.v1.product.barcode.description",
+            "example": "7891234567895"
+          },
+          "brand": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Brand V3"
+              }
+            ],
+            "description": "api.doc.v1.product.brand.description"
+          },
+          "category": {
+            "type": "string",
+            "description": "api.doc.v1.product.category.description",
+            "example": "Coffee"
+          }
+        }
+      },
+      "Field Rep V3": {
+        "type": "object",
+        "description": "api.doc.v3.rep.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.rep.id.description",
+            "format": "int64",
+            "example": 57
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v3.rep.name.description",
+            "example": "Ana Costa"
+          },
+          "email": {
+            "type": "string",
+            "description": "api.doc.v3.rep.email.description",
+            "format": "email",
+            "example": "ana.costa@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "api.doc.v3.rep.phone.description",
+            "example": "+5511987654321"
+          },
+          "team": {
+            "type": "string",
+            "description": "api.doc.v3.rep.team.description",
+            "example": "São Paulo - Capital"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "api.doc.v3.rep.enabled.description",
+            "example": true
+          }
+        }
+      },
+      "Scheduled Visit V3": {
+        "type": "object",
+        "description": "api.doc.v3.visit.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.visit.id.description",
+            "format": "int64",
+            "example": 120554
+          },
+          "storeId": {
+            "type": "integer",
+            "description": "api.doc.v3.visit.store-id.description",
+            "format": "int64",
+            "example": 4021
+          },
+          "date": {
+            "type": "string",
+            "description": "api.doc.v3.visit.date.description",
+            "format": "date",
+            "example": "2025-03-14"
+          },
+          "plannedStart": {
+            "type": "string",
+            "description": "api.doc.v3.visit.planned-start.description",
+            "example": "09:30"
+          },
+          "status": {
+            "type": "string",
+            "description": "api.doc.v3.visit.status.description",
+            "enum": [
+              "SCHEDULED",
+              "IN_PROGRESS",
+              "DONE",
+              "MISSED"
+            ],
+            "example": "SCHEDULED"
+          }
+        }
+      },
+      "Scheduled Visit Input V3": {
+        "type": "object",
+        "description": "api.doc.v3.visit-input.description",
+        "required": [
+          "storeId",
+          "date"
+        ],
+        "properties": {
+          "storeId": {
+            "type": "integer",
+            "description": "api.doc.v3.visit.store-id.description",
+            "format": "int64",
+            "example": 4021
+          },
+          "date": {
+            "type": "string",
+            "description": "api.doc.v3.visit.date.description",
+            "format": "date",
+            "example": "2025-03-14"
+          },
+          "plannedStart": {
+            "type": "string",
+            "description": "api.doc.v3.visit.planned-start.description",
+            "example": "09:30"
+          }
+        }
+      },
+      "Check In V3": {
+        "type": "object",
+        "description": "api.doc.v3.checkin.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.checkin.id.description",
+            "format": "int64",
+            "example": 88123
+          },
+          "type": {
+            "type": "string",
+            "description": "api.doc.v3.checkin.type.description",
+            "enum": [
+              "CHECK_IN",
+              "CHECK_OUT"
+            ],
+            "example": "CHECK_IN"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "api.doc.v3.checkin.timestamp.description",
+            "format": "date-time",
+            "example": "2025-03-14T12:31:05Z"
+          },
+          "latitude": {
+            "type": "number",
+            "description": "api.doc.address.latitude.description",
+            "format": "double",
+            "example": -23.5558
+          },
+          "longitude": {
+            "type": "number",
+            "description": "api.doc.address.longitude.description",
+            "format": "double",
+            "example": -46.6623
+          },
+          "distanceMeters": {
+            "type": "integer",
+            "description": "api.doc.v3.checkin.distance.description",
+            "example": 18
+          }
+        }
+      },
+      "Survey V3": {
+        "type": "object",
+        "description": "api.doc.v3.survey.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.survey.id.description",
+            "format": "int64",
+            "example": 640
+          },
+          "name": {
+            "type": "string",
+            "description": "api.doc.v3.survey.name.description",
+            "example": "Shelf share - coffee"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "api.doc.v3.survey.start-date.description",
+            "format": "date",
+            "example": "2025-03-01"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "api.doc.v3.survey.end-date.description",
+            "format": "date",
+            "example": "2025-03-31"
+          }
+        }
+      },
+      "Survey Field V1": {
+        "type": "object",
+        "description": "api.doc.v1.survey-field.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v1.survey-field.id.description",
+            "format": "int64",
+            "example": 7712
+          },
+          "label": {
+            "type": "string",
+            "description": "api.doc.v1.survey-field.label.description",
+            "example": "Shelf price (R$)"
+          },
+          "type": {
+            "type": "string",
+            "description": "api.doc.v1.survey-field.type.description",
+            "enum": [
+              "TEXT",
+              "NUMBER",
+              "MONEY",
+              "SINGLE_CHOICE",
+              "MULTIPLE_CHOICE",
+              "PHOTO"
+            ],
+            "example": "MONEY"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "api.doc.v1.survey-field.required.description",
+            "example": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "api.doc.v1.survey-field.options.description"
+          }
+        }
+      },
+      "Survey Answer V3": {
+        "type": "object",
+        "description": "api.doc.v3.answer.description",
+        "properties": {
+          "fieldId": {
+            "type": "integer",
+            "description": "api.doc.v3.answer.field-id.description",
+            "format": "int64",
+            "example": 7712
+          },
+          "value": {
+            "type": "string",
+            "description": "api.doc.v3.answer.value.description",
+            "example": "21.90"
+          }
+        }
+      },
+      "Survey Response V3": {
+        "type": "object",
+        "description": "api.doc.v3.response.description",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "api.doc.v3.response.id.description",
+            "format": "int64",
+            "example": 550123
+          },
+          "storeId": {
+            "type": "integer",
+            "description": "api.doc.v3.visit.store-id.description",
+            "format": "int64",
+            "example": 4021
+          },
+          "repId": {
+            "type": "integer",
+            "description": "api.doc.v3.response.rep-id.description",
+            "format": "int64",
+            "example": 57
+          },
+          "submittedAt": {
+            "type": "string",
+            "description": "api.doc.v3.response.submitted-at.description",
+            "format": "date-time",
+            "example": "2025-03-14T12:58:40Z"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Survey Answer V3"
+            },
+            "description": "api.doc.v3.response.answers.description"
+          }
+        }
+      },
+      "Page Store V1": {
+        "type": "object",
+        "description": "api.doc.common.page.description",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Store V1"
+            },
+            "description": "api.doc.common.page.items.description"
+          },
+          "page": {
+            "type": "integer",
+            "description": "api.doc.common.page.page.description",
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "description": "api.doc.common.page.size.description",
+            "example": 50
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "api.doc.common.page.total.description",
+            "format": "int64",
+            "example": 1280
+          }
+        }
+      },
+      "Page Product V1": {
+        "type": "object",
+        "description": "api.doc.common.page.description",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product V1"
+            },
+            "description": "api.doc.common.page.items.description"
+          },
+          "page": {
+            "type": "integer",
+            "description": "api.doc.common.page.page.description",
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "description": "api.doc.common.page.size.description",
+            "example": 50
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "api.doc.common.page.total.description",
+            "format": "int64",
+            "example": 1280
+          }
+        }
+      },
+      "Page Field Rep V3": {
+        "type": "object",
+        "description": "api.doc.common.page.description",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field%20Rep%20V3"
+            },
+            "description": "api.doc.common.page.items.description"
+          },
+          "page": {
+            "type": "integer",
+            "description": "api.doc.common.page.page.description",
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "description": "api.doc.common.page.size.description",
+            "example": 50
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "api.doc.common.page.total.description",
+            "format": "int64",
+            "example": 1280
+          }
+        }
+      },
+      "Page Survey Response V3": {
+        "type": "object",
+        "description": "api.doc.common.page.description",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Survey Response V3"
+            },
+            "description": "api.doc.common.page.items.description"
+          },
+          "page": {
+            "type": "integer",
+            "description": "api.doc.common.page.page.description",
+            "example": 1
+          },
+          "size": {
+            "type": "integer",
+            "description": "api.doc.common.page.size.description",
+            "example": 50
+          },
+          "totalItems": {
+            "type": "integer",
+            "description": "api.doc.common.page.total.description",
+            "format": "int64",
+            "example": 1280
+          }
+        }
+      }
+    }
+  }
+}

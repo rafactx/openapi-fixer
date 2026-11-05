@@ -1,0 +1,140 @@
+# Locale-independent source of truth for step 1 (hydrate).
+# Any string that matches placeholder_pattern is translated at the end of step 1
+# with the locale's dictionary.json, so text in this file can be localised too.
+
+placeholder_pattern: '^api\.doc\.'
+
+info:
+  title: Shelfline Field API
+  version: '3.2.0'
+  description: api.doc.info.description
+  contact:
+    name: Shelfline Developer Support
+    email: developers@shelfline.example
+    url: https://developers.shelfline.example
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://{workspace}.shelfline.example/api
+    description: api.doc.server.description
+    variables:
+      workspace:
+        default: demo
+        description: api.doc.server.workspace.description
+
+security_schemes:
+  BasicAuth:
+    type: http
+    scheme: basic
+    description: api.doc.security.basic.description
+
+# Injected into #/components/*. Step 3 and step 4 reuse these parameters by $ref,
+# so a parameter they add is translated like everything else.
+components:
+  parameters:
+    WorkspaceId:
+      name: workspaceId
+      in: path
+      required: true
+      description: api.doc.param.workspace-id.description
+      schema: { type: integer, format: int64 }
+      example: 7
+    VisitIds:
+      name: visitIds
+      in: query
+      required: true
+      description: api.doc.param.visit-ids.description
+      style: form
+      explode: false
+      schema: { type: array, items: { type: integer, format: int64 } }
+      example: [120554, 120555]
+    BrandName:
+      name: name
+      in: query
+      description: api.doc.param.brand-name.description
+      schema: { type: string }
+    ClientName:
+      name: X-Client-Name
+      in: header
+      required: true
+      description: api.doc.header.client.description
+      schema: { type: string }
+      example: erp-sync
+    ApiVersion:
+      name: Api-Version
+      in: header
+      description: api.doc.header.version.description
+      schema: { type: string, default: '2025-01-15' }
+  schemas:
+    ErrorV3:
+      type: object
+      description: api.doc.error.v3.description
+      properties:
+        status: { type: integer, description: api.doc.error.v3.status.description, example: 400 }
+        code: { type: string, description: api.doc.error.v3.code.description, example: INVALID_FIELD }
+        message: { type: string, description: api.doc.error.v3.message.description, example: Request validation failed. }
+        details:
+          type: array
+          description: api.doc.error.v3.details.description
+          items:
+            type: object
+            properties:
+              field: { type: string, example: code }
+              message: { type: string, example: must be unique in the workspace }
+    ErrorLegacy:
+      type: object
+      description: api.doc.error.legacy.description
+      properties:
+        code: { type: integer, description: api.doc.error.legacy.code.description, example: 1001 }
+        message: { type: string, description: api.doc.error.legacy.message.description, example: Store not found }
+  responses:
+    BadRequestV3:
+      description: api.doc.error.bad-request
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorV3' } } }
+    UnauthorizedV3:
+      description: api.doc.error.unauthorized
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorV3' } } }
+    NotFoundV3:
+      description: api.doc.error.not-found
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorV3' } } }
+    TooManyRequests:
+      description: api.doc.error.rate-limited
+      headers:
+        Retry-After: { schema: { type: integer } }
+    BadRequestLegacy:
+      description: api.doc.error.bad-request
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorLegacy' } } }
+    UnauthorizedLegacy:
+      description: api.doc.error.unauthorized
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorLegacy' } } }
+    NotFoundLegacy:
+      description: api.doc.error.not-found
+      content: { application/json: { schema: { $ref: '#/components/schemas/ErrorLegacy' } } }
+
+# First matching path_prefix wins. Status codes an operation already defines are kept.
+error_responses:
+  - path_prefix: /v3/
+    responses: { '400': BadRequestV3, '401': UnauthorizedV3, '404': NotFoundV3, '429': TooManyRequests }
+  - path_prefix: /
+    responses: { '400': BadRequestLegacy, '401': UnauthorizedLegacy, '404': NotFoundLegacy, '429': TooManyRequests }
+
+# Header parameters added (by $ref) to every operation, optionally only under some prefixes.
+global_parameters:
+  - name: ClientName
+  - name: ApiVersion
+    path_prefixes: [/v3/]
+
+# Sidebar order. Names are placeholders, translated per locale.
+tags:
+  - name: api.doc.section.stores.title
+    description: api.doc.section.stores.description
+  - name: api.doc.section.products.title
+    description: api.doc.section.products.description
+  - name: api.doc.section.reps.title
+    description: api.doc.section.reps.description
+  - name: api.doc.section.visits.title
+    description: api.doc.section.visits.description
+  - name: api.doc.section.surveys.title
+    description: api.doc.section.surveys.description

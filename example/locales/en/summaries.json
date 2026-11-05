@@ -1,0 +1,23 @@
+{
+  "list": "List stores (v1)",
+  "save": "Create store (v1)",
+  "findById": "Get store (v1)",
+  "edit": "Replace store (v1)",
+  "delete": "Delete store (v1)",
+  "findById_1": "Get mall",
+  "findPaginated": "List products",
+  "findById_2": "Get product",
+  "formFields": "List survey fields",
+  "getById": "Get store",
+  "patch": "Update store",
+  "findAll": "List chains",
+  "findAll_1": "List brands",
+  "findPaginated_1": "List field reps",
+  "getById_1": "Get field rep",
+  "findScheduledVisits": "List scheduled visits",
+  "saveAll": "Schedule visits",
+  "deleteAll": "Unschedule visits",
+  "findCheckIns": "List visit check-ins",
+  "formsActivated": "List active surveys",
+  "loadData": "List survey responses"
+}

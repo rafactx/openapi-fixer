@@ -1,0 +1,23 @@
+{
+  "list": "Listar tiendas (v1)",
+  "save": "Crear tienda (v1)",
+  "findById": "Obtener tienda (v1)",
+  "edit": "Reemplazar tienda (v1)",
+  "delete": "Eliminar tienda (v1)",
+  "findById_1": "Obtener centro comercial",
+  "findPaginated": "Listar productos",
+  "findById_2": "Obtener producto",
+  "formFields": "Listar campos de encuesta",
+  "getById": "Obtener tienda",
+  "patch": "Actualizar tienda",
+  "findAll": "Listar cadenas",
+  "findAll_1": "Listar marcas",
+  "findPaginated_1": "Listar representantes de campo",
+  "getById_1": "Obtener representante de campo",
+  "findScheduledVisits": "Listar visitas programadas",
+  "saveAll": "Programar visitas",
+  "deleteAll": "Cancelar visitas",
+  "findCheckIns": "Listar check-ins de la visita",
+  "formsActivated": "Listar encuestas activas",
+  "loadData": "Listar respuestas de encuestas"
+}

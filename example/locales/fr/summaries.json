@@ -1,0 +1,23 @@
+{
+  "list": "Lister les magasins (v1)",
+  "save": "Créer un magasin (v1)",
+  "findById": "Obtenir un magasin (v1)",
+  "edit": "Remplacer un magasin (v1)",
+  "delete": "Supprimer un magasin (v1)",
+  "findById_1": "Obtenir un centre commercial",
+  "findPaginated": "Lister les produits",
+  "findById_2": "Obtenir un produit",
+  "formFields": "Lister les champs d'un questionnaire",
+  "getById": "Obtenir un magasin",
+  "patch": "Mettre à jour un magasin",
+  "findAll": "Lister les enseignes",
+  "findAll_1": "Lister les marques",
+  "findPaginated_1": "Lister les commerciaux terrain",
+  "getById_1": "Obtenir un commercial terrain",
+  "findScheduledVisits": "Lister les visites planifiées",
+  "saveAll": "Planifier des visites",
+  "deleteAll": "Annuler des visites",
+  "findCheckIns": "Lister les check-ins d'une visite",
+  "formsActivated": "Lister les questionnaires actifs",
+  "loadData": "Lister les réponses aux questionnaires"
+}
