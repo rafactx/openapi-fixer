@@ -11,9 +11,9 @@ example/openapi.json ──► 1 hydrate ──► 2 fix names & $refs ──►
 
 ## Why this exists
 
-I built this while I was a Support Engineer at Involves, documenting a real SaaS API. The spec exported by the backend was technically "OpenAPI", but you could not ship it: descriptions were i18n keys, operations had no titles, schema names had spaces, several paths declared parameters that did not exist (or forgot ones that did), and some `DELETE`s carried a body. Fixing it by hand after every release was not an option, so the fixes became code and config.
+I built this while working as a Support Engineer on a SaaS API. The spec exported by the backend was technically "OpenAPI", but you could not ship it: descriptions were i18n keys, operations had no titles, schema names had spaces, several paths declared parameters that did not exist (or forgot ones that did), and some `DELETE`s carried a body. Fixing it by hand after every release was not an option, so the fixes became code and config.
 
-This repository is a cleaned-up version of that toolkit. The company's spec is **not** included; the example is **Shelfline Field API**, a fictional retail field-execution API that reproduces the same classes of problems. Its output feeds [api-docs-starter](https://github.com/rafactx/api-docs-starter), a multilingual docs portal.
+This repository is a cleaned-up version of that toolkit. The original spec is **not** included; the example is **Shelfline Field API**, a fictional retail field-execution API that reproduces the same classes of problems. Its output feeds [api-docs-starter](https://github.com/rafactx/api-docs-starter), a multilingual docs portal.
 
 ## Quickstart
 
@@ -79,9 +79,9 @@ Some fixes need a human decision: is that `DELETE` body really a list of IDs tha
 
 Added parameters are `$ref`s to components injected in step 1, so they arrive already translated. `--export-config template.yaml` writes a starter file.
 
-### 4. Lint and validate (`4_final_verification.py`)
+### 4. Lint, fix and validate (`4_final_verification.py`)
 
-A generic pass over every operation for problems nobody listed: request bodies on GET/HEAD/DELETE, path parameters missing from the URL or the URL variables never declared, path parameters that are not `required`. It reports duplicate `operationId`s and invalid component names, then runs `openapi-spec-validator`. It exits 1 on any error, so it can gate CI or a docs deploy.
+A generic pass over every operation for problems nobody listed. It rewrites the file in place to fix four of them: request bodies on GET/HEAD/DELETE are removed, path parameters missing from the URL are removed, URL variables never declared are added, and path parameters get `required: true`. Duplicate `operationId`s and invalid component names are only reported. It then runs `openapi-spec-validator`. It exits 1 on any error, so it can gate CI or a docs deploy.
 
 ### Design choices
 
@@ -120,7 +120,7 @@ requirements*.txt               exact pins compiled from pyproject.toml (make lo
 
 1. Copy `example/` to a new folder and drop in your generated `openapi.json`.
 2. Run step 1 without `--strict`: the warnings list every placeholder and operation that still needs text. Fill in `dictionary.json` and `summaries.json`.
-3. Run step 3's `--export-config` and step 4: the problems step 4 fixes generically are fine to leave there; the ones that need judgement go into `corrections.yaml`.
+3. Run step 3 with `--export-config` to get a template, then run step 4. Leave anything step 4 fixes automatically; put fixes that need a human decision in `corrections.yaml`.
 4. `python run_pipeline.py --example my-api --out dist`
 
 ## Contributing
