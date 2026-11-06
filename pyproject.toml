@@ -1,0 +1,36 @@
+[project]
+name = "openapi-fixer"
+version = "0.0.0"
+description = "Four-step pipeline that turns a generated OpenAPI spec into a translated, valid one."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Rafael Teixeira" }]
+requires-python = ">=3.10"
+dependencies = [
+    "PyYAML>=6.0",
+    "openapi-spec-validator>=0.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[project.urls]
+Repository = "https://github.com/rafactx/openapi-fixer"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["common"]
