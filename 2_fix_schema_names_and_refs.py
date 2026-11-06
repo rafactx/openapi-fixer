@@ -103,7 +103,7 @@ class ComponentRenamer:
             return f"#/components/{section}/{plan[name]}"
         return ref
 
-    def update_refs(self, node: Any) -> Any:
+    def update_refs(self, node: Any) -> None:
         if isinstance(node, dict):
             for key, value in node.items():
                 if key == "$ref" and isinstance(value, str):
@@ -118,7 +118,6 @@ class ComponentRenamer:
         elif isinstance(node, list):
             for item in node:
                 self.update_refs(item)
-        return node
 
     def dangling_refs(self) -> list[str]:
         missing: list[str] = []
