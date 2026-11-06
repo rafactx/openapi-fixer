@@ -1,0 +1,18 @@
+name: Feature request
+description: A new fix, rule or option for one of the pipeline steps.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem in the generated spec
+      description: What the generator emits today, with a short example.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed fix
+      description: Which step should handle it, and whether it is a generic rule (step 4) or a reviewed correction (step 3).
+    validations:
+      required: true

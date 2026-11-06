@@ -1,0 +1,36 @@
+name: Bug report
+description: A pipeline step crashes, produces an invalid spec, or changes something it should not.
+labels: [bug]
+body:
+  - type: input
+    id: step
+    attributes:
+      label: Step
+      description: Which script failed or misbehaved (e.g. 2_fix_schema_names_and_refs.py, run_pipeline.py).
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and output
+      description: The exact command you ran and what it printed.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Minimal input
+      description: The smallest OpenAPI fragment (and config or corrections entry) that reproduces it. Remove anything private.
+      render: json
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12.4"
