@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -12,10 +11,11 @@ import pytest
 from openapi_spec_validator import validate
 from openapi_spec_validator.validation.exceptions import OpenAPIValidationError
 
+from common import VALID_COMPONENT_NAME
+
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE = ROOT / "example"
 LOCALES = sorted(p.name for p in (EXAMPLE / "locales").iterdir() if p.is_dir())
-VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
 def run(script: str, *args: str) -> subprocess.CompletedProcess[str]:
@@ -63,7 +63,7 @@ def test_output_is_valid_and_complete(built: dict[str, dict], locale: str) -> No
 
     assert not [s for s in strings(spec) if s.startswith("api.doc.")], "untranslated placeholders"
     for section in spec["components"].values():
-        assert all(VALID_NAME.match(name) for name in section)
+        assert all(VALID_COMPONENT_NAME.match(name) for name in section)
 
     for path, item in spec["paths"].items():
         for method, op in item.items():
