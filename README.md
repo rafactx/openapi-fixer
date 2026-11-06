@@ -85,10 +85,17 @@ A generic pass over every operation for problems nobody listed: request bodies o
 
 ### Design choices
 
-- **Every step is idempotent.** Running the pipeline twice changes nothing the second time (`tests/test_pipeline.py` checks this).
+- **Steps 2-4 are idempotent.** Running them again on the output changes nothing. Step 1 expects the generator's raw output, since it translates the tag names it matches on.
 - **Config over code.** Endpoint-specific knowledge lives in `config.yaml` and `corrections.yaml`. Adding a fix is a reviewed config change.
 - **One input, many locales.** Locale-specific text lives only in `locales/<locale>/`. `make build` writes one spec per locale from the same input.
 - **Fail loudly.** Name collisions, dangling refs, missing translations (`--strict`) and validator errors stop the pipeline.
+
+## Tests
+
+`make check` runs ruff and pytest; CI runs it plus `make build` on Python 3.10 and 3.13.
+
+- `tests/test_common.py`: unit tests for the shared helpers (`$ref` resolution, path templates, JSON I/O).
+- `tests/test_pipeline.py`: builds every locale end to end and checks that the example input fails validation, each output passes `openapi-spec-validator` with no untranslated keys, invalid names or missing summaries, the locales differ, steps 2-4 are idempotent, step 2 refuses name collisions, and step 4 exits 1 on an invalid spec.
 
 ## Repository layout
 
@@ -104,8 +111,7 @@ example/
   config.yaml                   metadata, components, error rules, tag order
   corrections.yaml              reviewed fixes for step 3
   locales/{en,pt-BR,es,fr}/     dictionary.json + summaries.json
-tests/test_common.py            unit tests for common.py
-tests/test_pipeline.py          end-to-end checks
+tests/                          unit and end-to-end tests
 pyproject.toml                  metadata, dependency ranges, ruff and pytest config
 requirements*.txt               exact pins compiled from pyproject.toml (make lock)
 ```
