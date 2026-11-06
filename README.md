@@ -20,11 +20,11 @@ This repository is a cleaned-up version of that toolkit. The company's spec is *
 Requires Python 3.10+.
 
 ```bash
-git clone https://github.com/rafactx/openapi-fixer-v2.git
-cd openapi-fixer-v2
-make setup    # .venv + PyYAML, openapi-spec-validator, pytest
+git clone https://github.com/rafactx/openapi-fixer.git
+cd openapi-fixer
+make setup    # .venv with the pinned dependencies from requirements-dev.txt
 make build    # runs steps 1-4 for en, pt-BR, es, fr -> build/openapi.<locale>.json
-make check    # runs the pipeline end to end and validates every output (pytest)
+make check    # ruff, unit tests, and the end-to-end pipeline tests
 ```
 
 Without `make`:
@@ -104,7 +104,10 @@ example/
   config.yaml                   metadata, components, error rules, tag order
   corrections.yaml              reviewed fixes for step 3
   locales/{en,pt-BR,es,fr}/     dictionary.json + summaries.json
-tests/test_pipeline.py          end-to-end checks (make check)
+tests/test_common.py            unit tests for common.py
+tests/test_pipeline.py          end-to-end checks
+pyproject.toml                  metadata, dependency ranges, ruff and pytest config
+requirements*.txt               exact pins compiled from pyproject.toml (make lock)
 ```
 
 ## Using it on your own spec
@@ -114,12 +117,9 @@ tests/test_pipeline.py          end-to-end checks (make check)
 3. Run step 3's `--export-config` and step 4: the problems step 4 fixes generically are fine to leave there; the ones that need judgement go into `corrections.yaml`.
 4. `python run_pipeline.py --example my-api --out dist`
 
-## Screenshots
+## Contributing
 
-Placeholders to add before publishing (paths are relative to the repo root):
-
-- `docs/screenshots/pipeline-run.png`: terminal output of `make build`
-- `docs/screenshots/before-after.png`: Scalar rendering of the raw input next to the fixed output
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, the checks CI runs, and the pull request flow. Report vulnerabilities as described in [SECURITY.md](SECURITY.md).
 
 ## License
 
