@@ -21,15 +21,23 @@ from __future__ import annotations
 import argparse
 import re
 import sys
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 from urllib.parse import unquote
 
 from common import load_json, save_json
 
 VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 COMPONENT_SECTIONS = (
-    "schemas", "responses", "parameters", "examples",
-    "requestBodies", "headers", "securitySchemes", "links", "callbacks",
+    "schemas",
+    "responses",
+    "parameters",
+    "examples",
+    "requestBodies",
+    "headers",
+    "securitySchemes",
+    "links",
+    "callbacks",
 )
 
 

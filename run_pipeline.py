@@ -26,8 +26,14 @@ def run_locale(example: Path, out: Path, locale: str) -> Path:
     shutil.copyfile(ROOT / example / "openapi.json", ROOT / target)
     locale_dir = example / "locales" / locale
     steps = [
-        ["1_hydrate_openapi.py", str(target), str(example / "config.yaml"),
-         str(locale_dir / "dictionary.json"), str(locale_dir / "summaries.json"), "--strict"],
+        [
+            "1_hydrate_openapi.py",
+            str(target),
+            str(example / "config.yaml"),
+            str(locale_dir / "dictionary.json"),
+            str(locale_dir / "summaries.json"),
+            "--strict",
+        ],
         ["2_fix_schema_names_and_refs.py", str(target)],
         ["3_fix_semantic_paths.py", str(target), "--config", str(example / "corrections.yaml")],
         ["4_final_verification.py", str(target)],
@@ -49,11 +55,16 @@ def main() -> int:
     example = Path(os.path.relpath(args.example, ROOT))
     out = Path(os.path.relpath(args.out, ROOT))
     (ROOT / out).mkdir(parents=True, exist_ok=True)
-    locales = args.locale or sorted(p.name for p in (ROOT / example / "locales").iterdir() if p.is_dir())
+    locales = args.locale or sorted(
+        p.name for p in (ROOT / example / "locales").iterdir() if p.is_dir()
+    )
     for locale in locales:
         print(f"\n=== {locale} ===", flush=True)
         run_locale(example, out, locale)
-    print(f"\nbuilt {len(locales)} spec(s) in {out}: " + ", ".join(f"openapi.{l}.json" for l in locales))
+    print(
+        f"\nbuilt {len(locales)} spec(s) in {out}: "
+        + ", ".join(f"openapi.{loc}.json" for loc in locales)
+    )
     return 0
 
 

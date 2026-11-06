@@ -27,7 +27,14 @@ import re
 import sys
 from typing import Any
 
-from common import declared_params, iter_operations, load_json, resolve_ref, save_json, template_params
+from common import (
+    declared_params,
+    iter_operations,
+    load_json,
+    resolve_ref,
+    save_json,
+    template_params,
+)
 
 VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 NO_BODY_METHODS = ("get", "head", "delete")
@@ -63,7 +70,9 @@ class FinalVerifier:
             for raw in params:
                 resolved = resolve_ref(self.doc, raw)
                 if resolved.get("in") == "path" and resolved.get("name") not in expected:
-                    self.fixes.append(f"R2 {label}: removed path parameter {resolved.get('name')!r}")
+                    self.fixes.append(
+                        f"R2 {label}: removed path parameter {resolved.get('name')!r}"
+                    )
                     continue
                 kept.append(raw)
             if params:
@@ -89,7 +98,7 @@ class FinalVerifier:
                 self.fixes.append(f"R3 {label}: declared {{{name}}} ({how})")
 
             # R4
-            for raw, resolved in declared_params(self.doc, path_item, operation):
+            for _raw, resolved in declared_params(self.doc, path_item, operation):
                 if resolved.get("in") == "path" and resolved.get("required") is not True:
                     resolved["required"] = True
                     self.fixes.append(f"R4 {label}: {resolved.get('name')!r} marked required")
@@ -116,7 +125,9 @@ class FinalVerifier:
         try:
             from openapi_spec_validator import validate
         except ImportError:
-            self.errors.append("openapi-spec-validator is not installed (pip install -r requirements.txt)")
+            self.errors.append(
+                "openapi-spec-validator is not installed (pip install -r requirements.txt)"
+            )
             return
         try:
             validate(self.doc)

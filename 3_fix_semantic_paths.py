@@ -31,7 +31,14 @@ from typing import Any
 
 import yaml
 
-from common import declared_params, iter_operations, load_json, resolve_ref, save_json, template_params
+from common import (
+    declared_params,
+    iter_operations,
+    load_json,
+    resolve_ref,
+    save_json,
+    template_params,
+)
 
 TEMPLATE: dict[str, Any] = {
     "corrections": [

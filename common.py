@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 HTTP_METHODS = ("get", "put", "post", "delete", "options", "head", "patch", "trace")
 PATH_TEMPLATE_PARAM = re.compile(r"\{([^}/]+)\}")
@@ -20,7 +21,7 @@ def load_json(path: str | Path) -> dict[str, Any]:
         with path.open(encoding="utf-8") as handle:
             return json.load(handle)
     except json.JSONDecodeError as exc:
-        raise SystemExit(f"error: {path} is not valid JSON ({exc.msg}, line {exc.lineno})")
+        raise SystemExit(f"error: {path} is not valid JSON ({exc.msg}, line {exc.lineno})") from exc
 
 
 def save_json(path: str | Path, document: dict[str, Any]) -> None:
