@@ -21,15 +21,22 @@ from __future__ import annotations
 import argparse
 import re
 import sys
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 from urllib.parse import unquote
 
-from common import load_json, save_json
+from common import VALID_COMPONENT_NAME, load_json, save_json
 
-VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 COMPONENT_SECTIONS = (
-    "schemas", "responses", "parameters", "examples",
-    "requestBodies", "headers", "securitySchemes", "links", "callbacks",
+    "schemas",
+    "responses",
+    "parameters",
+    "examples",
+    "requestBodies",
+    "headers",
+    "securitySchemes",
+    "links",
+    "callbacks",
 )
 
 
@@ -57,7 +64,9 @@ class ComponentRenamer:
             entries = components.get(section)
             if not isinstance(entries, dict):
                 continue
-            plan = {old: self.normalise(old) for old in entries if not VALID_NAME.match(old)}
+            plan = {
+                old: self.normalise(old) for old in entries if not VALID_COMPONENT_NAME.match(old)
+            }
             if not plan:
                 continue
             self._check_collisions(section, entries, plan)
@@ -94,7 +103,7 @@ class ComponentRenamer:
             return f"#/components/{section}/{plan[name]}"
         return ref
 
-    def update_refs(self, node: Any) -> Any:
+    def update_refs(self, node: Any) -> None:
         if isinstance(node, dict):
             for key, value in node.items():
                 if key == "$ref" and isinstance(value, str):
@@ -109,7 +118,6 @@ class ComponentRenamer:
         elif isinstance(node, list):
             for item in node:
                 self.update_refs(item)
-        return node
 
     def dangling_refs(self) -> list[str]:
         missing: list[str] = []

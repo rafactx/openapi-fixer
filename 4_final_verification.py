@@ -23,13 +23,21 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from typing import Any
 
-from common import declared_params, iter_operations, load_json, resolve_ref, save_json, template_params
+from openapi_spec_validator import validate as validate_spec
 
-VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
+from common import (
+    VALID_COMPONENT_NAME,
+    declared_params,
+    iter_operations,
+    load_json,
+    resolve_ref,
+    save_json,
+    template_params,
+)
+
 NO_BODY_METHODS = ("get", "head", "delete")
 
 
@@ -63,7 +71,9 @@ class FinalVerifier:
             for raw in params:
                 resolved = resolve_ref(self.doc, raw)
                 if resolved.get("in") == "path" and resolved.get("name") not in expected:
-                    self.fixes.append(f"R2 {label}: removed path parameter {resolved.get('name')!r}")
+                    self.fixes.append(
+                        f"R2 {label}: removed path parameter {resolved.get('name')!r}"
+                    )
                     continue
                 kept.append(raw)
             if params:
@@ -71,9 +81,9 @@ class FinalVerifier:
 
             # R3
             declared = {
-                resolved.get("name")
-                for _raw, resolved in declared_params(self.doc, path_item, operation)
-                if resolved.get("in") == "path"
+                param.get("name")
+                for param in declared_params(self.doc, path_item, operation)
+                if param.get("in") == "path"
             }
             for name in expected:
                 if name in declared:
@@ -89,16 +99,16 @@ class FinalVerifier:
                 self.fixes.append(f"R3 {label}: declared {{{name}}} ({how})")
 
             # R4
-            for raw, resolved in declared_params(self.doc, path_item, operation):
-                if resolved.get("in") == "path" and resolved.get("required") is not True:
-                    resolved["required"] = True
-                    self.fixes.append(f"R4 {label}: {resolved.get('name')!r} marked required")
+            for param in declared_params(self.doc, path_item, operation):
+                if param.get("in") == "path" and param.get("required") is not True:
+                    param["required"] = True
+                    self.fixes.append(f"R4 {label}: {param.get('name')!r} marked required")
 
     def check_document(self) -> None:
         # R5
         for section, entries in self.doc.get("components", {}).items():
             for name in entries if isinstance(entries, dict) else {}:
-                if not VALID_NAME.match(name):
+                if not VALID_COMPONENT_NAME.match(name):
                     self.errors.append(f"R5 components.{section}: invalid name {name!r}")
         # R6, R7
         seen: dict[str, str] = {}
@@ -114,12 +124,7 @@ class FinalVerifier:
 
     def validate(self) -> None:
         try:
-            from openapi_spec_validator import validate
-        except ImportError:
-            self.errors.append("openapi-spec-validator is not installed (pip install -r requirements.txt)")
-            return
-        try:
-            validate(self.doc)
+            validate_spec(self.doc)
         except Exception as exc:  # the validator raises several exception types
             first_line = str(exc).splitlines()[0] if str(exc) else type(exc).__name__
             self.errors.append(f"openapi-spec-validator: {first_line[:300]}")

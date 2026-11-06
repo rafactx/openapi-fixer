@@ -11,20 +11,20 @@ example/openapi.json ──► 1 hydrate ──► 2 fix names & $refs ──►
 
 ## Why this exists
 
-I built this while I was a Support Engineer at Involves, documenting a real SaaS API. The spec exported by the backend was technically "OpenAPI", but you could not ship it: descriptions were i18n keys, operations had no titles, schema names had spaces, several paths declared parameters that did not exist (or forgot ones that did), and some `DELETE`s carried a body. Fixing it by hand after every release was not an option, so the fixes became code and config.
+I built this while working as a Support Engineer on a SaaS API. The spec exported by the backend was technically "OpenAPI", but you could not ship it: descriptions were i18n keys, operations had no titles, schema names had spaces, several paths declared parameters that did not exist (or forgot ones that did), and some `DELETE`s carried a body. Fixing it by hand after every release was not an option, so the fixes became code and config.
 
-This repository is a cleaned-up version of that toolkit. The company's spec is **not** included; the example is **Shelfline Field API**, a fictional retail field-execution API that reproduces the same classes of problems. Its output feeds [api-docs-starter](https://github.com/rafactx/api-docs-starter), a multilingual docs portal.
+This repository is a cleaned-up version of that toolkit. The original spec is **not** included; the example is **Shelfline Field API**, a fictional retail field-execution API that reproduces the same classes of problems. Its output feeds [api-docs-starter](https://github.com/rafactx/api-docs-starter), a multilingual docs portal.
 
 ## Quickstart
 
 Requires Python 3.10+.
 
 ```bash
-git clone https://github.com/rafactx/openapi-fixer-v2.git
-cd openapi-fixer-v2
-make setup    # .venv + PyYAML, openapi-spec-validator, pytest
+git clone https://github.com/rafactx/openapi-fixer.git
+cd openapi-fixer
+make setup    # .venv with the pinned dependencies from requirements-dev.txt
 make build    # runs steps 1-4 for en, pt-BR, es, fr -> build/openapi.<locale>.json
-make check    # runs the pipeline end to end and validates every output (pytest)
+make check    # ruff, unit tests, and the end-to-end pipeline tests
 ```
 
 Without `make`:
@@ -79,16 +79,23 @@ Some fixes need a human decision: is that `DELETE` body really a list of IDs tha
 
 Added parameters are `$ref`s to components injected in step 1, so they arrive already translated. `--export-config template.yaml` writes a starter file.
 
-### 4. Lint and validate (`4_final_verification.py`)
+### 4. Lint, fix and validate (`4_final_verification.py`)
 
-A generic pass over every operation for problems nobody listed: request bodies on GET/HEAD/DELETE, path parameters missing from the URL or the URL variables never declared, path parameters that are not `required`. It reports duplicate `operationId`s and invalid component names, then runs `openapi-spec-validator`. It exits 1 on any error, so it can gate CI or a docs deploy.
+A generic pass over every operation for problems nobody listed. It rewrites the file in place to fix four of them: request bodies on GET/HEAD/DELETE are removed, path parameters missing from the URL are removed, URL variables never declared are added, and path parameters get `required: true`. Duplicate `operationId`s and invalid component names are only reported. It then runs `openapi-spec-validator`. It exits 1 on any error, so it can gate CI or a docs deploy.
 
 ### Design choices
 
-- **Every step is idempotent.** Running the pipeline twice changes nothing the second time (`tests/test_pipeline.py` checks this).
+- **Steps 2-4 are idempotent.** Running them again on the output changes nothing. Step 1 expects the generator's raw output, since it translates the tag names it matches on.
 - **Config over code.** Endpoint-specific knowledge lives in `config.yaml` and `corrections.yaml`. Adding a fix is a reviewed config change.
 - **One input, many locales.** Locale-specific text lives only in `locales/<locale>/`. `make build` writes one spec per locale from the same input.
 - **Fail loudly.** Name collisions, dangling refs, missing translations (`--strict`) and validator errors stop the pipeline.
+
+## Tests
+
+`make check` runs ruff and pytest; CI runs it plus `make build` on Python 3.10 and 3.13.
+
+- `tests/test_common.py`: unit tests for the shared helpers (`$ref` resolution, path templates, JSON I/O).
+- `tests/test_pipeline.py`: builds every locale end to end and checks that the example input fails validation, each output passes `openapi-spec-validator` with no untranslated keys, invalid names or missing summaries, the locales differ, steps 2-4 are idempotent, step 2 refuses name collisions, and step 4 exits 1 on an invalid spec.
 
 ## Repository layout
 
@@ -104,22 +111,21 @@ example/
   config.yaml                   metadata, components, error rules, tag order
   corrections.yaml              reviewed fixes for step 3
   locales/{en,pt-BR,es,fr}/     dictionary.json + summaries.json
-tests/test_pipeline.py          end-to-end checks (make check)
+tests/                          unit and end-to-end tests
+pyproject.toml                  metadata, dependency ranges, ruff and pytest config
+requirements*.txt               exact pins compiled from pyproject.toml (make lock)
 ```
 
 ## Using it on your own spec
 
 1. Copy `example/` to a new folder and drop in your generated `openapi.json`.
 2. Run step 1 without `--strict`: the warnings list every placeholder and operation that still needs text. Fill in `dictionary.json` and `summaries.json`.
-3. Run step 3's `--export-config` and step 4: the problems step 4 fixes generically are fine to leave there; the ones that need judgement go into `corrections.yaml`.
+3. Run step 3 with `--export-config` to get a template, then run step 4. Leave anything step 4 fixes automatically; put fixes that need a human decision in `corrections.yaml`.
 4. `python run_pipeline.py --example my-api --out dist`
 
-## Screenshots
+## Contributing
 
-Placeholders to add before publishing (paths are relative to the repo root):
-
-- `docs/screenshots/pipeline-run.png`: terminal output of `make build`
-- `docs/screenshots/before-after.png`: Scalar rendering of the raw input next to the fixed output
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, the checks CI runs, and the pull request flow. Report vulnerabilities as described in [SECURITY.md](SECURITY.md).
 
 ## License
 

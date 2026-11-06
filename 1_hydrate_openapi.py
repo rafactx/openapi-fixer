@@ -56,7 +56,6 @@ class OpenAPIHydrator:
         self.translated = 0
         self.missing_summaries: list[str] = []
 
-    # 1 ---------------------------------------------------------------------
     def inject_metadata(self) -> None:
         if "info" in self.config:
             self.doc["info"] = copy.deepcopy(self.config["info"])
@@ -64,7 +63,6 @@ class OpenAPIHydrator:
             self.doc["servers"] = copy.deepcopy(self.config["servers"])
         print(f"  info and {len(self.doc.get('servers', []))} server(s) injected")
 
-    # 2 ---------------------------------------------------------------------
     def inject_security(self) -> None:
         schemes = self.config.get("security_schemes", {})
         if not schemes:
@@ -76,7 +74,6 @@ class OpenAPIHydrator:
         )
         print(f"  security schemes: {', '.join(schemes)}")
 
-    # 3 ---------------------------------------------------------------------
     def inject_components(self) -> None:
         components = self.doc.setdefault("components", {})
         for section in ("schemas", "responses", "parameters"):
@@ -85,7 +82,6 @@ class OpenAPIHydrator:
                 components.setdefault(section, {}).update(copy.deepcopy(entries))
                 print(f"  components.{section}: +{len(entries)}")
 
-    # 4 ---------------------------------------------------------------------
     def inject_summaries(self) -> None:
         injected = 0
         for path, method, operation in iter_operations(self.doc):
@@ -100,7 +96,6 @@ class OpenAPIHydrator:
         for item in self.missing_summaries:
             print(f"  warn: no summary for {item}")
 
-    # 5 ---------------------------------------------------------------------
     def inject_error_responses(self) -> None:
         rules = self.config.get("error_responses", [])
         added = 0
@@ -115,7 +110,6 @@ class OpenAPIHydrator:
                     added += 1
         print(f"  error responses added: {added}")
 
-    # 6 ---------------------------------------------------------------------
     def inject_global_parameters(self) -> None:
         added = 0
         for entry in self.config.get("global_parameters", []):
@@ -130,7 +124,6 @@ class OpenAPIHydrator:
                     added += 1
         print(f"  global header references added: {added}")
 
-    # 7 ---------------------------------------------------------------------
     def order_tags(self) -> None:
         configured = copy.deepcopy(self.config.get("tags", []))
         known = {tag["name"] for tag in configured}
@@ -145,7 +138,6 @@ class OpenAPIHydrator:
         self.doc["tags"] = [tag for tag in configured if tag["name"] in used] + extra
         print(f"  tags ordered: {len(self.doc['tags'])}")
 
-    # 8 ---------------------------------------------------------------------
     def _translate(self, node: Any) -> Any:
         if isinstance(node, dict):
             # Keys are translated too (some generators emit i18n keys as map keys),

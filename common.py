@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 HTTP_METHODS = ("get", "put", "post", "delete", "options", "head", "patch", "trace")
 PATH_TEMPLATE_PARAM = re.compile(r"\{([^}/]+)\}")
+# OpenAPI 3 requires component keys to match this pattern.
+VALID_COMPONENT_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
 def load_json(path: str | Path) -> dict[str, Any]:
@@ -20,7 +23,7 @@ def load_json(path: str | Path) -> dict[str, Any]:
         with path.open(encoding="utf-8") as handle:
             return json.load(handle)
     except json.JSONDecodeError as exc:
-        raise SystemExit(f"error: {path} is not valid JSON ({exc.msg}, line {exc.lineno})")
+        raise SystemExit(f"error: {path} is not valid JSON ({exc.msg}, line {exc.lineno})") from exc
 
 
 def save_json(path: str | Path, document: dict[str, Any]) -> None:
@@ -65,9 +68,7 @@ def resolve_ref(document: dict[str, Any], node: Any) -> Any:
 
 def declared_params(
     document: dict[str, Any], path_item: dict[str, Any], operation: dict[str, Any]
-) -> list[tuple[dict[str, Any], dict[str, Any]]]:
-    """Return (raw, resolved) pairs for path-level and operation-level parameters."""
-    pairs = []
-    for raw in list(path_item.get("parameters", [])) + list(operation.get("parameters", [])):
-        pairs.append((raw, resolve_ref(document, raw)))
-    return pairs
+) -> list[dict[str, Any]]:
+    """Return the resolved path-level and operation-level parameters."""
+    raw = [*path_item.get("parameters", []), *operation.get("parameters", [])]
+    return [resolve_ref(document, param) for param in raw]

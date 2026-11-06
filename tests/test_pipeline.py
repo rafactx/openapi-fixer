@@ -3,18 +3,19 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 from openapi_spec_validator import validate
+from openapi_spec_validator.validation.exceptions import OpenAPIValidationError
+
+from common import VALID_COMPONENT_NAME
 
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE = ROOT / "example"
 LOCALES = sorted(p.name for p in (EXAMPLE / "locales").iterdir() if p.is_dir())
-VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
 def run(script: str, *args: str) -> subprocess.CompletedProcess[str]:
@@ -41,7 +42,7 @@ def built(tmp_path_factory: pytest.TempPathFactory) -> dict[str, dict]:
 
 def test_example_input_is_really_broken() -> None:
     raw = json.loads((EXAMPLE / "openapi.json").read_text("utf-8"))
-    with pytest.raises(Exception):
+    with pytest.raises(OpenAPIValidationError):
         validate(raw)
     assert any(" " in name for name in raw["components"]["schemas"])
     assert any(s.startswith("api.doc.") for s in strings(raw))
@@ -62,7 +63,7 @@ def test_output_is_valid_and_complete(built: dict[str, dict], locale: str) -> No
 
     assert not [s for s in strings(spec) if s.startswith("api.doc.")], "untranslated placeholders"
     for section in spec["components"].values():
-        assert all(VALID_NAME.match(name) for name in section)
+        assert all(VALID_COMPONENT_NAME.match(name) for name in section)
 
     for path, item in spec["paths"].items():
         for method, op in item.items():
@@ -85,7 +86,10 @@ def test_steps_are_idempotent(built: dict[str, dict], tmp_path: Path) -> None:
     target.write_text(json.dumps(built["en"], indent=2, ensure_ascii=False) + "\n", "utf-8")
     before = target.read_text("utf-8")
     assert run("2_fix_schema_names_and_refs.py", str(target)).returncode == 0
-    assert run("3_fix_semantic_paths.py", str(target), "-c", "example/corrections.yaml").returncode == 0
+    assert (
+        run("3_fix_semantic_paths.py", str(target), "-c", "example/corrections.yaml").returncode
+        == 0
+    )
     assert run("4_final_verification.py", str(target)).returncode == 0
     assert target.read_text("utf-8") == before
 

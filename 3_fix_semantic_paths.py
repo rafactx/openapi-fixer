@@ -31,7 +31,14 @@ from typing import Any
 
 import yaml
 
-from common import declared_params, iter_operations, load_json, resolve_ref, save_json, template_params
+from common import (
+    declared_params,
+    iter_operations,
+    load_json,
+    resolve_ref,
+    save_json,
+    template_params,
+)
 
 TEMPLATE: dict[str, Any] = {
     "corrections": [
@@ -125,9 +132,9 @@ class SemanticFixer:
         for path, method, operation in iter_operations(self.doc):
             path_item = self.doc["paths"][path]
             declared = {
-                resolved.get("name")
-                for _raw, resolved in declared_params(self.doc, path_item, operation)
-                if resolved.get("in") == "path"
+                param.get("name")
+                for param in declared_params(self.doc, path_item, operation)
+                if param.get("in") == "path"
             }
             expected = set(template_params(path))
             for name in sorted(expected - declared):
