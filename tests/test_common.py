@@ -70,8 +70,10 @@ def test_declared_params_merges_path_and_operation_level() -> None:
     doc = {"components": {"parameters": {"Id": {"name": "id", "in": "path"}}}}
     path_item = {"parameters": [{"$ref": "#/components/parameters/Id"}]}
     operation = {"parameters": [{"name": "q", "in": "query"}]}
-    resolved = [r for _raw, r in declared_params(doc, path_item, operation)]
-    assert resolved == [{"name": "id", "in": "path"}, {"name": "q", "in": "query"}]
+    assert declared_params(doc, path_item, operation) == [
+        {"name": "id", "in": "path"},
+        {"name": "q", "in": "query"},
+    ]
 
 
 def test_save_and_load_round_trip(tmp_path: Path) -> None:

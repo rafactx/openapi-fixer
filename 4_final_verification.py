@@ -81,9 +81,9 @@ class FinalVerifier:
 
             # R3
             declared = {
-                resolved.get("name")
-                for _raw, resolved in declared_params(self.doc, path_item, operation)
-                if resolved.get("in") == "path"
+                param.get("name")
+                for param in declared_params(self.doc, path_item, operation)
+                if param.get("in") == "path"
             }
             for name in expected:
                 if name in declared:
@@ -99,10 +99,10 @@ class FinalVerifier:
                 self.fixes.append(f"R3 {label}: declared {{{name}}} ({how})")
 
             # R4
-            for _raw, resolved in declared_params(self.doc, path_item, operation):
-                if resolved.get("in") == "path" and resolved.get("required") is not True:
-                    resolved["required"] = True
-                    self.fixes.append(f"R4 {label}: {resolved.get('name')!r} marked required")
+            for param in declared_params(self.doc, path_item, operation):
+                if param.get("in") == "path" and param.get("required") is not True:
+                    param["required"] = True
+                    self.fixes.append(f"R4 {label}: {param.get('name')!r} marked required")
 
     def check_document(self) -> None:
         # R5

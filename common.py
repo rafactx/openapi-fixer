@@ -68,9 +68,7 @@ def resolve_ref(document: dict[str, Any], node: Any) -> Any:
 
 def declared_params(
     document: dict[str, Any], path_item: dict[str, Any], operation: dict[str, Any]
-) -> list[tuple[dict[str, Any], dict[str, Any]]]:
-    """Return (raw, resolved) pairs for path-level and operation-level parameters."""
-    pairs = []
-    for raw in list(path_item.get("parameters", [])) + list(operation.get("parameters", [])):
-        pairs.append((raw, resolve_ref(document, raw)))
-    return pairs
+) -> list[dict[str, Any]]:
+    """Return the resolved path-level and operation-level parameters."""
+    raw = [*path_item.get("parameters", []), *operation.get("parameters", [])]
+    return [resolve_ref(document, param) for param in raw]

@@ -132,9 +132,9 @@ class SemanticFixer:
         for path, method, operation in iter_operations(self.doc):
             path_item = self.doc["paths"][path]
             declared = {
-                resolved.get("name")
-                for _raw, resolved in declared_params(self.doc, path_item, operation)
-                if resolved.get("in") == "path"
+                param.get("name")
+                for param in declared_params(self.doc, path_item, operation)
+                if param.get("in") == "path"
             }
             expected = set(template_params(path))
             for name in sorted(expected - declared):
