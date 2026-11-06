@@ -22,7 +22,7 @@ make build    # runs the pipeline on the example spec for every locale
 ## Pull requests
 
 - Branch from `main` and open a pull request into `main`. Direct pushes to `main` are blocked.
-- CI (`.github/workflows/ci.yml`) must pass on Python 3.10 and 3.13.
+- CI (`.github/workflows/ci.yml`) must pass on Python 3.10 and 3.13; the `ci-ok` job is the required check.
 - Pull requests are squash-merged, so the PR title becomes the commit subject.
 - A change to a step's behaviour needs a test. Endpoint-specific fixes for the example belong in `example/corrections.yaml`, not in Python.
 
