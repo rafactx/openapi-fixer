@@ -23,11 +23,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from typing import Any
 
+from openapi_spec_validator import validate as validate_spec
+
 from common import (
+    VALID_COMPONENT_NAME,
     declared_params,
     iter_operations,
     load_json,
@@ -36,7 +38,6 @@ from common import (
     template_params,
 )
 
-VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 NO_BODY_METHODS = ("get", "head", "delete")
 
 
@@ -107,7 +108,7 @@ class FinalVerifier:
         # R5
         for section, entries in self.doc.get("components", {}).items():
             for name in entries if isinstance(entries, dict) else {}:
-                if not VALID_NAME.match(name):
+                if not VALID_COMPONENT_NAME.match(name):
                     self.errors.append(f"R5 components.{section}: invalid name {name!r}")
         # R6, R7
         seen: dict[str, str] = {}
@@ -123,14 +124,7 @@ class FinalVerifier:
 
     def validate(self) -> None:
         try:
-            from openapi_spec_validator import validate
-        except ImportError:
-            self.errors.append(
-                "openapi-spec-validator is not installed (pip install -r requirements.txt)"
-            )
-            return
-        try:
-            validate(self.doc)
+            validate_spec(self.doc)
         except Exception as exc:  # the validator raises several exception types
             first_line = str(exc).splitlines()[0] if str(exc) else type(exc).__name__
             self.errors.append(f"openapi-spec-validator: {first_line[:300]}")

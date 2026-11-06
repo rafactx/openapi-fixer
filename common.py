@@ -10,6 +10,8 @@ from typing import Any
 
 HTTP_METHODS = ("get", "put", "post", "delete", "options", "head", "patch", "trace")
 PATH_TEMPLATE_PARAM = re.compile(r"\{([^}/]+)\}")
+# OpenAPI 3 requires component keys to match this pattern.
+VALID_COMPONENT_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
 def load_json(path: str | Path) -> dict[str, Any]:

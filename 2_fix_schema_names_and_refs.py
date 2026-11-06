@@ -25,9 +25,8 @@ from collections.abc import Callable
 from typing import Any
 from urllib.parse import unquote
 
-from common import load_json, save_json
+from common import VALID_COMPONENT_NAME, load_json, save_json
 
-VALID_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 COMPONENT_SECTIONS = (
     "schemas",
     "responses",
@@ -65,7 +64,9 @@ class ComponentRenamer:
             entries = components.get(section)
             if not isinstance(entries, dict):
                 continue
-            plan = {old: self.normalise(old) for old in entries if not VALID_NAME.match(old)}
+            plan = {
+                old: self.normalise(old) for old in entries if not VALID_COMPONENT_NAME.match(old)
+            }
             if not plan:
                 continue
             self._check_collisions(section, entries, plan)
