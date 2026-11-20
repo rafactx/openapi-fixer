@@ -76,7 +76,7 @@ rpds-py==2026.9.1 ; python_full_version >= '3.11'
     # via
     #   jsonschema
     #   referencing
-ruff==0.17.4
+ruff==0.17.5
     # via openapi-fixer (pyproject.toml)
 six==1.17.0
     # via rfc3339-validator
